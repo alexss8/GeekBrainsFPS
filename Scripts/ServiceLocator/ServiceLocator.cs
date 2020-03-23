@@ -2,25 +2,34 @@
 using System.Collections.Generic;
 
 
-namespace Geekbrains
+namespace GeekBrainsFPS
 {
     public static class ServiceLocator
     {
-        private static readonly Dictionary<Type, object> _servicecontainer = 
+        #region Fields
+
+        private static readonly Dictionary<Type, object> _serviceContainer =
             new Dictionary<Type, object>();
+
+        #endregion
+
+
+        #region Methods
 
         public static void SetService<T>(T value) where T : class
         {
             var typeValue = value.GetType();
-            if (!_servicecontainer.ContainsKey(typeValue))
+            if (!_serviceContainer.ContainsKey(typeValue))
             {
-                _servicecontainer[typeValue] = value;
+                _serviceContainer[typeValue] = value;
             }
         }
- 
+
         public static T Resolve<T>()
         {
-            return (T)_servicecontainer[typeof(T)];
+            return (T)_serviceContainer[typeof(T)];
         }
+
+        #endregion
     }
 }

@@ -2,25 +2,47 @@
 using UnityEngine;
 
 
-namespace Geekbrains
+namespace GeekBrainsFPS
 {
     public sealed class FlashLightModel : BaseObjectScene
     {
+        #region Fields
+
         [SerializeField] private float _speed = 11;
         [SerializeField] private float _batteryChargeMax;
+
         private Light _light;
         private Transform _goFollow;
         private Vector3 _vecOffset;
+
+        #endregion
+
+
+        #region Properties
+
         public float BatteryChargeCurrent { get; private set; }
+
+        #endregion
+
+
+        #region UnityMethods
 
         protected override void Awake()
         {
             base.Awake();
+
             _light = GetComponent<Light>();
+            _light.enabled = false;
+
             _goFollow = Camera.main.transform;
             _vecOffset = Transform.position - _goFollow.position;
             BatteryChargeCurrent = _batteryChargeMax;
         }
+
+        #endregion
+
+
+        #region Methods
 
         public void Switch(FlashLightActiveType value)
         {
@@ -55,5 +77,22 @@ namespace Geekbrains
             }
             return false;
         }
+
+        public bool RechargeBattery()
+        {
+            if (BatteryChargeCurrent < _batteryChargeMax)
+            {
+                BatteryChargeCurrent += Time.deltaTime;
+                return true;
+            }
+            return false;
+        }
+
+        public float GetBatteryChargeLevel()
+        {
+            return BatteryChargeCurrent / _batteryChargeMax;
+        }
+
+        #endregion
     }
 }

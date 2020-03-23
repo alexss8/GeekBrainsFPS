@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
 
 
-namespace Geekbrains
+namespace GeekBrainsFPS
 {
     public sealed class InputController : BaseController, IExecute
     {
+        #region Fields
+
         private KeyCode _activeFlashLight = KeyCode.F;
+
+        #endregion
+
+
+        #region IExecute
+
         public void Execute()
         {
             if (!IsActive) return;
@@ -14,5 +22,7 @@ namespace Geekbrains
                 ServiceLocator.Resolve<FlashLightController>().Switch();
             }
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
-﻿namespace Geekbrains
+﻿namespace GeekBrainsFPS
 {
-	public interface IInitialization
-	{
-		void Initialization();
-	}
+    public interface IInitialization
+    {
+        void Initialization();
+    }
 }
