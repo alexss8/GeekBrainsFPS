@@ -1,19 +1,11 @@
 ﻿using UnityEngine;
 
 
-namespace GeekBrainsFPS
+namespace Geekbrains
 {
     public sealed class GameController : MonoBehaviour
     {
-        #region MyRegion
-
         private Controllers _controllers;
-
-        #endregion
-
-
-        #region UnityMethods
-
         private void Start()
         {
             _controllers = new Controllers();
@@ -27,7 +19,5 @@ namespace GeekBrainsFPS
                 _controllers[i].Execute();
             }
         }
-
-        #endregion
     }
 }

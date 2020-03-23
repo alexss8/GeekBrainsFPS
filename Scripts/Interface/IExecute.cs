@@ -1,4 +1,4 @@
-﻿namespace GeekBrainsFPS
+﻿namespace Geekbrains
 {
     public interface IExecute
     {

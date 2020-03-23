@@ -2,38 +2,31 @@
 using UnityEngine;
 
 
-namespace GeekBrainsFPS
+namespace Geekbrains
 {
     public static class ServiceLocatorMonoBehaviour
     {
-        #region Fields
-
-        private static Dictionary<object, object> _serviceContainer = null;
-
-        #endregion
-
-
-        #region Methods
+        private static Dictionary<object, object> _servicecontainer = null;
 
         public static T GetService<T>(bool createObjectIfNotFound = true) where T : Object
         {
-            if (_serviceContainer == null)
+            if (_servicecontainer == null)
             {
-                _serviceContainer = new Dictionary<object, object>();
+                _servicecontainer = new Dictionary<object, object>();
             }
 
-            if (!_serviceContainer.ContainsKey(typeof(T)))
+            if (!_servicecontainer.ContainsKey(typeof(T)))
             {
                 return FindService<T>(createObjectIfNotFound);
             }
 
-            var service = (T)_serviceContainer[typeof(T)];
+            var service = (T)_servicecontainer[typeof(T)];
             if (service != null)
             {
                 return service;
             }
 
-            _serviceContainer.Remove(typeof(T));
+            _servicecontainer.Remove(typeof(T));
             return FindService<T>(createObjectIfNotFound);
 
         }
@@ -43,16 +36,14 @@ namespace GeekBrainsFPS
             T type = Object.FindObjectOfType<T>();
             if (type != null)
             {
-                _serviceContainer.Add(typeof(T), type);
+                _servicecontainer.Add(typeof(T), type);
             }
             else if (createObjectIfNotFound)
             {
-                var gameObject = new GameObject(typeof(T).Name, typeof(T));
-                _serviceContainer.Add(typeof(T), gameObject.GetComponent<T>());
+                var go = new GameObject(typeof(T).Name, typeof(T));
+                _servicecontainer.Add(typeof(T), go.GetComponent<T>());
             }
-            return (T)_serviceContainer[typeof(T)];
+            return (T)_servicecontainer[typeof(T)];
         }
-
-        #endregion
     }
 }

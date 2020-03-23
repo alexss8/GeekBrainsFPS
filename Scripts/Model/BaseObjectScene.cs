@@ -1,22 +1,13 @@
 ﻿using UnityEngine;
 
 
-namespace GeekBrainsFPS
+namespace Geekbrains
 {
     public abstract class BaseObjectScene : MonoBehaviour
     {
-        #region Fields
-
         private int _layer;
-
-        #endregion
-
-
-        #region Properties
-
         public Rigidbody Rigidbody { get; private set; }
         public Transform Transform { get; private set; }
-
         public int Layer
         {
             get => _layer;
@@ -27,26 +18,10 @@ namespace GeekBrainsFPS
             }
         }
 
-        #endregion
-
-
-        #region UnityMethods
-
-        protected virtual void Awake()
-        {
-            Rigidbody = GetComponent<Rigidbody>();
-            Transform = transform;
-        }
-
-        #endregion
-
-
-        #region Methods
-
         private void AskLayer(Transform obj, int layer)
         {
             obj.gameObject.layer = layer;
-            if (obj.childCount <= 0) return;
+            if (obj.childCount <= 0)return;
 
             foreach (Transform child in obj)
             {
@@ -54,6 +29,10 @@ namespace GeekBrainsFPS
             }
         }
 
-        #endregion
+        protected virtual void Awake()
+        {
+            Rigidbody = GetComponent<Rigidbody>();
+            Transform = transform;
+        }
     }
 }

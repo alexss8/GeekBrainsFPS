@@ -1,32 +1,18 @@
-﻿namespace GeekBrainsFPS
+﻿namespace Geekbrains
 {
-    public sealed class PlayerController : BaseController, IExecute
-    {
-        #region Fields
+	public class PlayerController : BaseController, IExecute
+	{
+		private readonly IMotor _motor;
 
-        private readonly IMotor _motor;
+		public PlayerController(IMotor motor)
+		{
+			_motor = motor;
+		}
 
-        #endregion
-
-
-        #region ClassLifeCycles
-
-        public PlayerController(IMotor motor)
-        {
-            _motor = motor;
-        }
-
-        #endregion
-
-
-        #region IExecute
-
-        public void Execute()
-        {
-            if (!IsActive) { return; }
-            _motor.Move();
-        }
-
-        #endregion
-    }
+		public void Execute()
+		{
+			if(!IsActive) {return;}
+			_motor.Move();
+		}
+	}
 }

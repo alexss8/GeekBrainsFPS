@@ -1,7 +1,7 @@
-﻿namespace GeekBrainsFPS
+﻿namespace Geekbrains
 {
-    public interface IMotor
-    {
-        void Move();
-    }
+	public interface IMotor
+	{
+		void Move();
+	}
 }

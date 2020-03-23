@@ -1,27 +1,26 @@
 ﻿using UnityEngine;
 
 
-namespace GeekBrainsFPS
+namespace Geekbrains
 {
     public sealed class FlashLightController : BaseController, IExecute, IInitialization
     {
-        #region Fields
-
         private FlashLightModel _flashLightModel;
-        private FlashLightTextUI _flashLightTextUI;
-        private FlashLightFillerUI _flashLightFillerUI;
+        private FlashLightUi _flashLightUi;
 
-        #endregion
-
-
-        #region Methods
+        public void Initialization()
+        {
+            _flashLightModel = Object.FindObjectOfType<FlashLightModel>();
+            _flashLightUi = Object.FindObjectOfType<FlashLightUi>();
+        }
 
         public override void On()
         {
-            if (IsActive) return;
+            if(IsActive) return;
             if (_flashLightModel.BatteryChargeCurrent <= 0) return;
             base.On();
             _flashLightModel.Switch(FlashLightActiveType.On);
+            _flashLightUi.SetActive(true);
         }
 
         public override void Off()
@@ -29,50 +28,29 @@ namespace GeekBrainsFPS
             if (!IsActive) return;
             base.Off();
             _flashLightModel.Switch(FlashLightActiveType.Off);
+            _flashLightUi.SetActive(false);
         }
-
-        #endregion
-
-
-        #region IExecute
 
         public void Execute()
         {
-            if (!IsActive)
+            if(!IsActive)
             {
-                if (_flashLightModel.RechargeBattery())
-                {
-                    _flashLightTextUI.Text = _flashLightModel.BatteryChargeCurrent;
-                    _flashLightFillerUI.FillAmount = _flashLightModel.GetBatteryChargeLevel();
-                }
                 return;
+            }
+            else
+            {
+                //todo add Battery
             }
 
             _flashLightModel.Rotation();
             if (_flashLightModel.EditBatteryCharge())
             {
-                _flashLightTextUI.Text = _flashLightModel.BatteryChargeCurrent;
-                _flashLightFillerUI.FillAmount = _flashLightModel.GetBatteryChargeLevel();
+                _flashLightUi.Text = _flashLightModel.BatteryChargeCurrent;
             }
             else
             {
                 Off();
             }
         }
-
-        #endregion
-
-
-        #region IInitialization
-
-        public void Initialization()
-        {
-            _flashLightModel = Object.FindObjectOfType<FlashLightModel>();
-            _flashLightTextUI = Object.FindObjectOfType<FlashLightTextUI>();
-            _flashLightFillerUI = Object.FindObjectOfType<FlashLightFillerUI>();
-            _flashLightTextUI.Text = _flashLightModel.BatteryChargeCurrent;
-        }
-
-        #endregion
     }
 }

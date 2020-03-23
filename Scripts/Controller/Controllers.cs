@@ -1,27 +1,16 @@
 ﻿using UnityEngine;
 
 
-namespace GeekBrainsFPS
+namespace Geekbrains
 {
     public sealed class Controllers : IInitialization
     {
-        #region Fields
-
         private readonly IExecute[] _executeControllers;
 
-        #endregion
-
-
-        #region Properties
-
         public int Length => _executeControllers.Length;
+
         public IExecute this[int index] => _executeControllers[index];
-
-        #endregion
-
-
-        #region ClassLifeCycles
-
+        
         public Controllers()
         {
             IMotor motor = default;
@@ -47,11 +36,6 @@ namespace GeekBrainsFPS
             _executeControllers[2] = ServiceLocator.Resolve<InputController>();
         }
 
-        #endregion
-
-
-        #region IInitialization
-
         public void Initialization()
         {
             foreach (var controller in _executeControllers)
@@ -61,11 +45,8 @@ namespace GeekBrainsFPS
                     initialization.Initialization();
                 }
             }
-
+            
             ServiceLocator.Resolve<InputController>().On();
-            ServiceLocator.Resolve<PlayerController>().On();
         }
-
-        #endregion
     }
 }
