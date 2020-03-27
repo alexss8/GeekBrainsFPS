@@ -3,7 +3,7 @@
 
 namespace GeekBrainsFPS
 {
-    public sealed class Controllers : IInitialization
+    public sealed class Controllers : IInitialization, IExecute
     {
         #region Fields
 
@@ -12,39 +12,27 @@ namespace GeekBrainsFPS
         #endregion
 
 
-        #region Properties
-
-        public int Length => _executeControllers.Length;
-        public IExecute this[int index] => _executeControllers[index];
-
-        #endregion
-
-
         #region ClassLifeCycles
 
         public Controllers()
         {
-            IMotor motor = default;
-            if (Application.platform == RuntimePlatform.PS4)
-            {
-                //
-            }
-            else
-            {
-                motor = new UnitMotor(
-                    ServiceLocatorMonoBehaviour.GetService<CharacterController>());
-            }
+            ServiceLocator.SetService(new Inventory());
 
+            IMotor motor = new UnitMotor(ServiceLocatorMonoBehaviour.GetService<CharacterController>());
             ServiceLocator.SetService(new PlayerController(motor));
             ServiceLocator.SetService(new FlashLightController());
             ServiceLocator.SetService(new InputController());
-            _executeControllers = new IExecute[3];
+            ServiceLocator.SetService(new WeaponController());
+            ServiceLocator.SetService(new SelectionController());
+            ServiceLocator.SetService(new TimeRemainingController());
 
-            _executeControllers[0] = ServiceLocator.Resolve<PlayerController>();
+            _executeControllers = new IExecute[5];
 
-            _executeControllers[1] = ServiceLocator.Resolve<FlashLightController>();
-
-            _executeControllers[2] = ServiceLocator.Resolve<InputController>();
+            _executeControllers[0] = ServiceLocator.Resolve<TimeRemainingController>();
+            _executeControllers[1] = ServiceLocator.Resolve<PlayerController>();
+            _executeControllers[2] = ServiceLocator.Resolve<FlashLightController>();
+            _executeControllers[3] = ServiceLocator.Resolve<InputController>();
+            _executeControllers[4] = ServiceLocator.Resolve<SelectionController>();
         }
 
         #endregion
@@ -62,8 +50,24 @@ namespace GeekBrainsFPS
                 }
             }
 
-            ServiceLocator.Resolve<InputController>().On();
             ServiceLocator.Resolve<PlayerController>().On();
+            ServiceLocator.Resolve<InputController>().On();
+            ServiceLocator.Resolve<SelectionController>().On();
+
+            ServiceLocator.Resolve<Inventory>().Initialization();
+        }
+
+        #endregion
+
+
+        #region IExecute
+
+        public void Execute()
+        {
+            for (var i = 0; i < _executeControllers.Length; i++)
+            {
+                _executeControllers[i].Execute();
+            }
         }
 
         #endregion
