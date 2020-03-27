@@ -22,10 +22,7 @@ namespace GeekBrainsFPS
 
         private void Update()
         {
-            for (var i = 0; i < _controllers.Length; i++)
-            {
-                _controllers[i].Execute();
-            }
+            _controllers.Execute();
         }
 
         #endregion
